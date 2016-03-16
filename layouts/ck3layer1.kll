@@ -1,0 +1,20 @@
+Name = ck3layer1;
+Version = 0.1;
+Author = "CryHam";
+KLL = 0.3c;
+Date = 2016-03-16;
+
+
+U"Up"    : action1(4);
+U"Left"  : action1(5);
+U"Right" : action1(6);
+U"Down"  : action1(7);
+
+
+U"A" : CONS"VolumeDown";
+U"B" : CONS"VolumeUp";
+
+# U"A" : action1(4);
+# U"B" : action1(5);
+# U"C" : action1(6);
+# U"D" : action1(7);

@@ -1,0 +1,62 @@
+Name = ck3overlay;
+Version = 0.1;
+Author = "CryHam";
+KLL = 0.3c;
+Date = 2016-03-16;
+
+S0x39 : U"F16";  # Fn
+S0x68 : U"F19";  # CapsLock
+S0x2D : U"F22";  # NumLock
+
+# bottom
+S0x80 : U"LCtrl";
+S0x0E : U"LAlt";
+S0x17 : U"RGui";
+S0x88 : U"RCtrl";
+S0x87 : U"RCtrl";
+
+# middle right column, custom
+S0x8A : U"Esc";
+S0x89 : U"Backspace";
+S0x77 : U"Enter";
+S0x78 : U"RShift";
+
+# arrows
+S0x1E : U"Ctrl" + U"Alt" + U"Delete";
+S0x0C : 'Test';
+S0x1B : U"Ctrl" + U"V";
+S0x1C : U"RCtrl";
+
+# mini  ab cd  ^v lr
+#---------------------
+
+S0x70 : U"Up";
+S0x81 : U"Left";
+S0x71 : U"Right";
+S0x72 : U"Down";
+
+S0x6D : U"A";
+S0x6C : U"B";
+# S0x6E : U"C";
+# S0x85 : U"D";
+
+action1 => CustomAction_action1_capability( usbCode : 1 );  # Single 8-bit argument
+
+# S0x70 : action1(0);
+# S0x81 : action1(2);
+# S0x71 : action1(3);
+# S0x72 : action1(1);
+
+# S0x6D : action1(4);
+# S0x6C : action1(5);
+# S0x6E : action1(6);
+# S0x85 : action1(7);
+
+# S0x6E : layerLock(1);  # toggle on/off
+# S0x85 : layerLatch(1);  # once, on next press
+
+S0x6E : layerRotate(0);  # 0 next 1 prev
+S0x85 : layerShift(1);   # hold
+
+# Bootloader Remote Reload Enable
+# flashModeEnabled = 1;
