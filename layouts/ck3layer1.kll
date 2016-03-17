@@ -13,8 +13,7 @@ U"Down"  : action1(7);
 
 U"A" : CONS"VolumeDown";
 U"B" : CONS"VolumeUp";
-
 # U"A" : action1(4);
 # U"B" : action1(5);
-# U"C" : action1(6);
-# U"D" : action1(7);
+U"C" : action1(6);
+U"D" : action1(7);
