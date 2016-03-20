@@ -1,11 +1,15 @@
-Name = ck3overlay;
+Name = CK3-overlay;
 Version = 0.1;
 Author = "CryHam";
 KLL = 0.3c;
 Date = 2016-03-16;
 
 
-U"Function1" : layerRotate(0);  # 0 next 1 prev
-U"Function2" : layerShift(1);   # hold
+U"Function1" : layerRotate(0);  # layerLock(1);  #
+# U"Function2" : layerShift(1);   # hold
+# U"Function2" : layerLock(2);  #
 
-action1 => CustomAction_action1_capability( usbCode : 1 );  # Single 8-bit argument
+# U"Function1" : layerRotate(0);  # 0 next
+# U"Function2" : layerRotate(1);  # 1 prev
+
+a => CustomAction_usbCode_capability( usbCode : 1 );  # Single 8-bit argument
