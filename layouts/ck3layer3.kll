@@ -1,0 +1,30 @@
+Name = CK3-layer-3c;
+Version = 0.4;
+Author = "CryHam";
+KLL = 0.3c;
+Date = 2016-03-20;
+#  new
+
+
+#  tested
+#U"4":U"P=";	 #ext B2
+#U"5":U"P,";	 #rbut oem~
+
+#U"C":SYS"POWERDOWN"; #not
+#U"V":SYS"SLEEP";
+
+#U"A":CONS"SCANPREVIOUSTRACK";
+#U"S":CONS"SCANNEXTTRACK";
+#U"Z":CONS"PAUSEPLAY";
+#U"C":CONS"STOP";
+
+#U"R":CONS"VOLUMEUP";
+#U"A":CONS"VOLUMEDOWN";
+#U"S":CONS"MUTE";
+
+#U"1":CONS"FORWARD";  #browser
+#U"2":CONS"BACK";
+
+#U"5":CONS"CALCULATOR";  #calc
+#U"X":CONS"SEARCH";  #find
+#U"C":CONS"BOOKMARKS";  #ext B1

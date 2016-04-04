@@ -7,6 +7,8 @@ Date = 2016-03-16;
 
 U"Function1" : layerLock(1);  # menu enter/leave
 U"Function2" : layerShift(2);  # hold
+U"Function3" : layerShift(3);  # hold
+U"Function4" : layerShift(4);  # hold
 
 U"Function3" : layerLatch(0);  # for 1 use
 U"Function4" : layerLock(0);   # toggle
