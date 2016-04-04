@@ -3,11 +3,27 @@ Version = 0.4;
 Author = "CryHam";
 KLL = 0.3c;
 Date = 2016-03-20;
-#  new
+#  sequences and mouse
 
 U"F1":U"F13"; U"F2":U"F14"; U"F3":U"F15"; U"F4":U"F16"; U"F5":U"F17";
 U"F6":U"F18"; U"F7":U"F19"; U"F8":U"F20"; U"F9":U"F21"; U"F10":U"F22";
 U"F11":U"F23"; U"F12":U"F24";
 
-U"Up":U"1"; U"Left":U"2"; U"Right":U"3"; U"Down":U"4";
-U"A":U"F1"; U"B":U"F2";
+U"1":s(0); U"2":s(1); U"3":s(2); U"4":s(3); U"5":s(4); U"6":s(5);
+U"Q":s(6); U"W":s(7); U"E":s(8); U"R":s(9); U"T":s(10); U"Y":s(11);
+U"A":s(12); U"S":s(13); U"D":s(14); U"F":s(15); U"G":s(16); U"H":s(17);
+
+U"[":'('; U"]":')'; U";":'*';
+U";":'*';
+
+U"Up":   mouseOut(0, 0,-1);  # y
+U"Down": mouseOut(0, 0, 1);
+U"Left": mouseOut(0,-1, 0);  # x
+U"Right":mouseOut(0, 1, 0);
+
+U"Home":  mouseOut(1, 0, 0);  # btns
+U"PageUp":mouseOut(2, 0, 0);
+U"P5":    mouseOut(3, 0, 0);
+
+# U"Up":U"1"; U"Left":U"2"; U"Right":U"3"; U"Down":U"4";
+# U"A":U"F1"; U"B":U"F2";
