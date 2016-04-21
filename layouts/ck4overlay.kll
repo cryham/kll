@@ -1,0 +1,21 @@
+Name = CK4-overlay;
+Version = 4.01;
+Author = "CryHam";
+KLL = 0.3c;
+Date = 2016-04-19;
+
+
+U"Function1" : layerLock(1);   # menu enter/leave
+U"Function2" : layerShift(2);  # hold
+U"Function3" : layerShift(3);  # hold
+U"Function4" : layerShift(4);  # hold
+
+#U"Function2" : flashMode();
+#flashModeEnabled = 1;
+
+#U"Function5" : layerLatch(2);  # for 1 use
+#U"Function6" : layerState(2,0);
+# U"Function1" : layerRotate(0);  # 0 next  1 prev
+
+a => CustomAction_usbCode_capability( usbCode : 1 );  # Single 8-bit argument
+s => CustomAction_Sequence_capability( index : 1 );  # Single 8-bit argument

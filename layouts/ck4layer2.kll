@@ -1,8 +1,8 @@
-Name = CK3-L2-sequences;
-Version = 3.10;
+Name = CK4-L2-sequences;
+Version = 4.01;
 Author = "CryHam";
 KLL = 0.3c;
-Date = 2016-04-05;
+Date = 2016-04-19;
 
 
 #  sequences 1
@@ -15,12 +15,11 @@ U"Z":s(15); U"X":s(16); U"C":s(17);
 
 #  sequences 2
 U"End": s(6);
-U"PEnter": s(7);
+U"\": s(7);  #U"PEnter": s(7);
 U"Left": s(8);
-U"Backspace": s(9);
+U"/": s(9);  #U"Backspace": s(9);
 U"Home": s(10);
-U"Esc": s(11);
-
+U"Up": s(11);
 
 #  symbols
 U"[":'(';  U"]":')';
@@ -34,6 +33,7 @@ U";":'%';  U"'":'&';
 #U",": U"Alt"+U"Shift"+U"Esc";
 #U".": U"Alt"+U"Esc";
 
-#  mini -
-# U"Up":U"1"; U"Left":U"2"; U"Right":U"3"; U"Down":U"4";
-# U"A":U"F1"; U"B":U"F2";
+U"F10": U"NumLock";
+U"F11": U"CapsLock";
+U"F12": U"ScrollLock";
+#U"PrintScreen": U"Pause";
