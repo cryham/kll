@@ -1,0 +1,9 @@
+myVariable = 1;
+myArray[] = a b c "b c" 3;
+myIndex[5] = "this text" thing; # Single element
+myIndex[6] = moar;
+
+myVariable => Variable_define;
+myArray => Array_define;
+myIndex => Index_define;
+

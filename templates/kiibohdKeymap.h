@@ -1,4 +1,4 @@
-/* Copyright (C) 2014-2015 by Jacob Alexander
+/* Copyright (C) 2014-2016 by Jacob Alexander
  *
  * This file is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -135,4 +135,16 @@
 
 // - Layer State
 <|LayerState|>
+
+
+
+// ----- Key Positions -----
+
+// -- Physical Key Positions
+//
+// Index 0: Key 1
+// Each key has 6 dimensions
+// x,y,z and rx,ry,rz (rotation)
+// Units are in mm
+<|KeyPositions|>
 

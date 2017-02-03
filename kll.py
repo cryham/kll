@@ -96,6 +96,12 @@ def processCommandLineArgs():
 		"Default: <backend specific>" )
 	pArgs.add_argument( '-h', '--help', action="help",
 		help="This message." )
+	pArgs.add_argument(
+		'-v', '--version',
+		action="version",
+		version="%(prog)s {0}".format( version ),
+		help="Show program's version number and exit"
+	)
 
 	# Process Arguments
 	args = pArgs.parse_args()
@@ -143,10 +149,14 @@ def tokenize( string ):
 		( 'LedCodeStart',     ( r'LED\[', ) ),
 		( 'ScanCode',         ( r'S((0x[0-9a-fA-F]+)|([0-9]+))', ) ),
 		( 'ScanCodeStart',    ( r'S\[', ) ),
+		( 'PixelCodeStart',   ( r'P\[.*', ) ), # Discarded, needs KLL 0.5
+		( 'AnimationStart',   ( r'A\[.*', ) ), # Discarded, needs KLL 0.5
+		( 'CodeStart',        ( r'\[', ) ),
 		( 'CodeEnd',          ( r'\]', ) ),
 		( 'String',           ( r'"[^"]*"', ) ),
 		( 'SequenceString',   ( r"'[^']*'", ) ),
-		( 'Operator',         ( r'=>|:\+|:-|::|:|=', ) ),
+		( 'Position',         ( r'r?[xyz]:-?[0-9]+(.[0-9]+)?', ) ),
+		( 'Operator',         ( r'<=|=>|:\+|:-|::|:|=', ) ),
 		( 'Number',           ( r'(-[ \t]*)?((0x[0-9a-fA-F]+)|(0|([1-9][0-9]*)))', VERBOSE ) ),
 		( 'Comma',            ( r',', ) ),
 		( 'Dash',             ( r'-', ) ),
@@ -160,6 +170,9 @@ def tokenize( string ):
 
 	# Tokens to filter out of the token stream
 	useless = ['Space', 'Comment']
+
+	# Discarded expresssions (KLL 0.4+)
+	useless.extend( ['PixelCodeStart', 'AnimationStart'] )
 
 	tokens = make_tokenizer( specs )
 	return [x for x in tokens( string ) if x.type not in useless]
@@ -590,6 +603,7 @@ sysCode     = tokenType('SysCode') >> make_sysCode
 none        = tokenType('None') >> make_none
 name        = tokenType('Name')
 number      = tokenType('Number') >> make_number
+position    = tokenType('Position')
 comma       = tokenType('Comma')
 dash        = tokenType('Dash')
 plus        = tokenType('Plus')
@@ -600,7 +614,8 @@ seqString   = tokenType('SequenceString') >> make_seqString
 unseqString = tokenType('SequenceString') >> make_unseqString # For use with variables
 
 # Code variants
-code_end = tokenType('CodeEnd')
+code_start = tokenType('CodeStart')
+code_end   = tokenType('CodeEnd')
 
 # Scan Codes
 scanCode_start     = tokenType('ScanCodeStart')
@@ -663,7 +678,7 @@ resultCode_outerList     = ( ( capFunc_sequence >> optionExpansion ) | none ) >>
 
 #| <variable> = <variable contents>;
 variable_contents   = name | content | string | number | comma | dash | unseqString
-variable_expression = name + skip( operator('=') ) + oneplus( variable_contents ) + skip( eol ) >> set_variable
+variable_expression = name + skip( maybe( code_start + maybe( number ) + code_end ) ) + skip( operator('=') ) + oneplus( variable_contents ) + skip( eol ) >> set_variable
 
 #| <capability name> => <c function>;
 capability_arguments  = name + skip( operator(':') ) + number + skip( maybe( comma ) )
@@ -677,11 +692,14 @@ operatorTriggerResult = operator(':') | operator(':+') | operator(':-') | operat
 scanCode_expression   = triggerCode_outerList + operatorTriggerResult + resultCode_outerList + skip( eol ) >> map_scanCode
 usbCode_expression    = triggerUSBCode_outerList + operatorTriggerResult + resultCode_outerList + skip( eol ) >> map_usbCode
 
+### Ignored expressions
+ignore_expression = scanCode_expanded | scanCode + operator('<=') + oneplus( position + maybe( skip( comma ) )) + eol
+
 def parse( tokenSequence ):
 	"""Sequence(Token) -> object"""
 
 	# Top-level Parser
-	expression = scanCode_expression | usbCode_expression | variable_expression | capability_expression | define_expression
+	expression = ignore_expression | scanCode_expression | usbCode_expression | variable_expression | capability_expression | define_expression
 
 	kll_text = many( expression )
 	kll_file = maybe( kll_text ) + skip( finished )
@@ -691,7 +709,7 @@ def parse( tokenSequence ):
 
 
 def processKLLFile( filename ):
-	with open( filename ) as file:
+	with open( filename, encoding='utf-8' ) as file:
 		data = file.read()
 		try:
 			tokenSequence = tokenize( data )
@@ -702,8 +720,10 @@ def processKLLFile( filename ):
 		try:
 			tree = parse( tokenSequence )
 		except (NoParseError, KeyError) as err:
-			print ( "{0} Parsing error in '{1}' - {2}".format( ERROR, filename, err ) )
-			sys.exit( 1 )
+			# Ignore data association expressions KLL 0.4+ required
+			if err.token.value != '<=':
+				print ( "{0} Parsing error in '{1}' - {2}".format( ERROR, filename, err ) )
+				sys.exit( 1 )
 
 
 ### Misc Utility Functions ###
@@ -722,23 +742,29 @@ def gitRevision( kllPath ):
 
 		# Get list of files that have changed since the commit
 		changed = subprocess.check_output( ['git', 'diff-index', '--name-only', 'HEAD', '--'] ).decode().splitlines()
+
+		# Get commit date
+		date = subprocess.check_output( ['git', 'show', '-s', '--format=%ci'] ).decode()[:-1]
 	except:
 		revision = "<no git>"
 		changed = []
+		date = "<no date>"
 
 	# Change back to the old working directory
 	os.chdir( origPath )
 
-	return revision, changed
+	return revision, changed, date
 
 
 ### Main Entry Point ###
 
 if __name__ == '__main__':
-	(baseFiles, defaultFiles, partialFileSets, backend_name, templates, outputs) = processCommandLineArgs()
-
 	# Look up git information on the compiler
-	gitRev, gitChanges = gitRevision( os.path.dirname( os.path.realpath( __file__ ) ) )
+	gitRev, gitChanges, gitDate = gitRevision( os.path.dirname( os.path.realpath( __file__ ) ) )
+	global version
+	version = "BACKPORT 0.3d.{0} - {1}".format( gitRev, gitDate )
+
+	(baseFiles, defaultFiles, partialFileSets, backend_name, templates, outputs) = processCommandLineArgs()
 
 	# Load backend module
 	global backend
