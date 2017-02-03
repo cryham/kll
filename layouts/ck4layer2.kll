@@ -36,4 +36,4 @@ U";":'%';  U"'":'&';
 U"F10": U"NumLock";
 U"F11": U"CapsLock";
 U"F12": U"ScrollLock";
-#U"PrintScreen": U"Pause";
+U"PrintScreen": U"Pause";
